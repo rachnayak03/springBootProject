@@ -4,6 +4,7 @@ import com.info.springRestAPI.dto.AddStudentRequestDTO;
 import com.info.springRestAPI.dto.StudentDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
     List<StudentDTO> getAllStudents();
@@ -15,4 +16,6 @@ public interface StudentService {
     void deleteStudentById(Long id);
 
     StudentDTO updateStudent(Long id, AddStudentRequestDTO addStudentRequestDTO);
+
+    StudentDTO updatePartialStudent(Long id, Map<String, Object> updates);
 }

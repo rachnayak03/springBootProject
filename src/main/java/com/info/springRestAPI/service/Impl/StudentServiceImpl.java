@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -60,6 +61,25 @@ public class StudentServiceImpl implements StudentService {
         modelMapper.map(addStudentRequestDTO,student);
         student=studentRepository.save(student);
         return modelMapper.map(student,StudentDTO.class);
+    }
+
+    @Override
+    public StudentDTO updatePartialStudent(Long id, Map<String, Object> updates) {
+        Student student=studentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Student not found with id:"+id));
+        updates.forEach((field,value)->{
+            switch(field){
+                case "name":
+                    student.setName((String) value);
+                    break;
+                case "email":
+                    student.setEmail((String) value);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Field is not supported");
+            }
+        });
+        Student savedstudent=studentRepository.save(student);
+        return modelMapper.map(savedstudent,StudentDTO.class);
     }
 
 }
